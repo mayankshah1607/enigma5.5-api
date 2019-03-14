@@ -24,4 +24,44 @@ router.post('/signup', (req,res) => {
     })
 })
 
+router.post('/login',(req,res) => {
+    User.findOne({Email: req.body.Email},(err,obj) => {
+        if (err) {
+            res.send({Status: 0, Message: "Failed due to " + err})
+        }
+        else{
+            if (obj === null) {
+                res.send({Status: 0, Message: "User not found"})
+            }
+            else {
+                bcrypt.compare(req.body.Password,obj.Password,(err,result) => {
+                    if (err) {
+                        res.send({Status: 0, Message: "Error in server "+err})
+                    }
+                    else {
+                        if (result){
+                            const token = jwt.sign({
+                                email: obj.email,
+                                id: obj._id
+                            },process.env.JWT_KEY,{expiresIn:'1h'})
+
+                            res.cookie('enigma_user',{
+                                email: obj.Email,
+                                id: obj._id,
+                                token: token
+                            })
+                            res.send({Status: 1, Message: "User Authenticated"})
+                        }
+
+                        else{
+                            res.send({Status: 0, Message: "Password do not match"})
+                        }
+                    }
+                })
+            }
+        }
+    })
+
+})
+
 module.exports = router;
