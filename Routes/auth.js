@@ -31,7 +31,7 @@ router.post('/login',(req,res) => {
         }
         else{
             if (obj === null) {
-                res.send({Status: 0, Message: "User not found"})
+                res.send({Status: 0, Message: "Username/Password is invalid!"})
             }
             else {
                 bcrypt.compare(req.body.Password,obj.Password,(err,result) => {
@@ -50,11 +50,11 @@ router.post('/login',(req,res) => {
                                 id: obj._id,
                                 token: token
                             })
-                            res.send({Status: 1, Message: "User Authenticated"})
+                            res.send({Status: 1, Message: "User Authenticated", Data: obj})
                         }
 
                         else{
-                            res.send({Status: 0, Message: "Password do not match"})
+                            res.send({Status: 0, Message: "Username/Password is invalid!"})
                         }
                     }
                 })
