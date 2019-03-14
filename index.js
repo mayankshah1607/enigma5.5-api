@@ -18,7 +18,9 @@ app.all('/*', function (req, res, next) {
 mongoose.connect(process.env.MONGO_DB_URL, (err) => {
     err ? console.log("Error connecting to database!") : console.log("Successfully connected to the database!");
 });
-
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(cookieParser());
 app.use('/auth',require('./Routes/auth'))
 app.use('/auth',require('./Routes/question'))
 app.listen(port, () => {
