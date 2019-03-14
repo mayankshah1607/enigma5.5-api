@@ -17,5 +17,5 @@ const UserSchema = new Schema({
     Points: Number
 })
 
-const User = mongoose.model('full',UserSchema);
+const User = mongoose.model('user',UserSchema);
 module.exports = User;

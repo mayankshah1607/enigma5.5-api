@@ -4,7 +4,8 @@
   "description": "restapi for enigma5.5",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -17,9 +18,12 @@
   },
   "homepage": "https://github.com/mayankshah1607/enigma5.5-api#readme",
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",
     "cookie-parser": "^1.4.4",
+    "dotenv": "^7.0.0",
     "express": "^4.16.4",
+    "jsonwebtoken": "^8.5.0",
     "mongoose": "^5.4.19",
     "morgan": "^1.9.1"
   },

@@ -9,5 +9,5 @@ const QuestionSchema = new Schema({
     Hint: String
 })
 
-const Question = mongoose.model('full',QuestionSchema)
+const Question = mongoose.model('question',QuestionSchema)
 module.exports = Question;

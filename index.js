@@ -2,10 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const logger = require('morgan');
-const port = process.env.PORT || 2000;
 const cookieParser = require('cookie-parser');
 
 require('dotenv').config();
+const port = process.env.PORT || 2000;
 const app = express()
 
 app.all('/*', function (req, res, next) {
@@ -22,7 +22,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use('/auth',require('./Routes/auth'))
-app.use('/auth',require('./Routes/question'))
+// app.use('/auth',require('./Routes/question'))
 app.listen(port, () => {
     console.log(`App started on port: ${port}.`);
 });
