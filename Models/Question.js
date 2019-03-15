@@ -6,7 +6,8 @@ const QuestionSchema = new Schema({
     Text: String,
     ImgUrl : String,
     Ans: String,
-    Hint: String
+    Hint: String,
+    SolvedBy: Number
 })
 
 const Question = mongoose.model('question',QuestionSchema)

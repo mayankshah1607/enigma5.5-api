@@ -14,7 +14,8 @@ const UserSchema = new Schema({
     },
     Password: String,
     CurQuestion: Number,
-    Points: Number
+    Points: Number,
+    UsedHints: Array
 })
 
 const User = mongoose.model('user',UserSchema);

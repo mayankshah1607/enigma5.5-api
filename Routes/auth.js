@@ -13,7 +13,8 @@ router.post('/signup', (req,res) => {
             Email : req.body.Email,
             Password : hash,
             CurQuestion: 1,
-            Points: 0
+            Points: 0,
+            UsedHints: [0,0,0,0,0,0,0,0,0,0]
         })
         .then(data => {
             res.send({Status: 1, Message: "User created."})
