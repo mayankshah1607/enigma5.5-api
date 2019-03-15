@@ -90,4 +90,17 @@ router.post('/gethint', (req,res) => {
     })
 })
 
+
+router.get('/leaderboard', (req,res) => {
+    User.find({}).sort({Points: 'desc'}).exec(function(err,docs){
+        if (err){
+            res.send({Status: 0, Message: "Error"})
+        }
+        else{
+
+            res.send({Status: 1, Message: "Leaders fetched", Data: docs})
+        }
+    })
+})
+
 module.exports = router;
