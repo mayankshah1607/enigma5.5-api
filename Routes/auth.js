@@ -78,7 +78,7 @@ router.post('/login',(req,res) => {
         }
         else{
             if (obj === null) {
-                res.send({Status: 0, Message: "Username/Password is invalid!"})
+                res.send({Status: 0, Message: "Username/Password is invalid"})
             }
             else {
                 bcrypt.compare(LoginPassword,obj.Password,(err,result) => {
