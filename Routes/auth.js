@@ -44,7 +44,7 @@ router.post('/signup', (req,res) => {
 
 
         }else{
-            res.send({Status: 0, Message: "Failed to verify captcha"})
+            res.send({Status: 0, Message: "Failed to verify captcha!"})
         }
     });
 })
