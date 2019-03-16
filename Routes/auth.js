@@ -52,7 +52,7 @@ router.post('/signup', (req,res) => {
 router.post('/login',(req,res) => {
 
     if (req.body.auto){
-        console.log(req.cookies)
+        console.log(req)
         try{
             const decoded = jwt.verify(JSON.parse(req.cookies.enigma).token, process.env.JWT_KEY);
             var LoginEmail = decoded.email;
