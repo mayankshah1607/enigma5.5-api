@@ -95,7 +95,8 @@ router.post('/login',(req,res) => {
 
                             res.cookie('enigma_user',{
                                 token: token
-                            })
+                            },
+                            { expires: new Date(Date.now() + 900000), httpOnly: true })
                             res.send({Status: 1, Message: "User Authenticated", Data: obj})
                         }
 
