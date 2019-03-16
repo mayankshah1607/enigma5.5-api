@@ -53,7 +53,7 @@ router.post('/login',(req,res) => {
 
     if (req.body.auto){
         try{
-            const decoded = jwt.verify(req.cookies.enigma_user.token, process.env.JWT_KEY);
+            const decoded = jwt.verify(req.cookies.enigma.token, process.env.JWT_KEY);
             var LoginEmail = decoded.email;
             var LoginPassword = decoded.pass;
             console.log(decoded)
@@ -93,10 +93,9 @@ router.post('/login',(req,res) => {
                                 id: obj._id
                             },process.env.JWT_KEY,{expiresIn:'1h'})
 
-                            res.cookie('enigma_user',{
+                            res.cookie('enigma',{
                                 token: token
-                            },
-                            { expires: new Date(Date.now() + 900000), httpOnly: true })
+                            })
                             res.send({Status: 1, Message: "User Authenticated", Data: obj})
                         }
 
@@ -112,7 +111,7 @@ router.post('/login',(req,res) => {
 })
 
 router.get('/logout',(req,res) => {
-    res.clearCookie('enigma_user');
+    res.clearCookie('enigma');
     res.json({
         Message: "Logged out."
     })
