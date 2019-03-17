@@ -53,12 +53,9 @@ router.post('/login',(req,res) => {
 
     if (req.body.auto){
 
-
         try{
             const decoded = jwt.verify(req.body.token, process.env.JWT_KEY);
             var uid = decoded.id;
-
-
 
             User.findOne({_id: uid}, (err,u) => {
                 if (err) {
@@ -74,33 +71,29 @@ router.post('/login',(req,res) => {
                     }
                     else{
                         if (obj === null) {
-                            res.send({Status: 0, Message: "Username/Password is invalid"})
+                            res.send({Status: 0, Message: "Username/Password is invalid -1 "})
                         }
                         else {
-                            bcrypt.compare(LoginPassword,obj.Password,(err,result) => {
-                                if (err) {
-                                    res.send({Status: 0, Message: "Error in server "+err})
-                                }
-                                else {
-                                    if (result){
-                                        const token = jwt.sign({
-                                            id: obj._id
-                                        },process.env.JWT_KEY,{expiresIn:'1h'})
+                            res.send({Status: 1, Message: "User Authenticated", Data: obj})
+                            // bcrypt.compare(LoginPassword,obj.Password,(err,result) => {
+                            //     if (err) {
+                            //         res.send({Status: 0, Message: "Error in server "+err})
+                            //     }
+                            //     else {
+                            //         if (result){
+                            //             res.send({Status: 1, Message: "User Authenticated", Data: obj})
+                            //         }
             
-                                        res.send({Status: 1, Message: "User Authenticated", Data: obj, token: token})
-                                    }
-            
-                                    else{
-                                        res.send({Status: 0, Message: "Username/Password is invalid!"})
-                                    }
-                                }
-                            })
+                            //         else{
+                            //             res.send({Status: 0, Message: "Username/Password is invalid! - 2 "})
+                            //         }
+                            //     }
+                            // })
                         }
                     }
                 })
 
             })
-            console.log(decoded)
         }
     
         catch(err){
@@ -131,7 +124,11 @@ router.post('/login',(req,res) => {
                                 const token = jwt.sign({
                                     id: obj._id
                                 },process.env.JWT_KEY,{expiresIn:'1h'})
-    
+                                
+
+                                res.cookie('enigma',{
+                                    token: token
+                                })
                                 res.send({Status: 1, Message: "User Authenticated", Data: obj, token: token})
                             }
     
