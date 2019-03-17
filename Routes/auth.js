@@ -61,9 +61,12 @@ router.post('/login',(req,res) => {
 
 
             User.findOne({_id: uid}, (err,u) => {
+                if (err) {
+                    console.log(err)
+                }
 
-                const LoginEmail = u.email;
-                const LoginPassword = u.pass;
+                const LoginEmail = u.Email;
+                const LoginPassword = u.Password;
 
                 User.findOne({Email: LoginEmail},(err,obj) => {
                     if (err) {
