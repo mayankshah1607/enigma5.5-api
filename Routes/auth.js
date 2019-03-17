@@ -52,10 +52,51 @@ router.post('/signup', (req,res) => {
 router.post('/login',(req,res) => {
 
     if (req.body.auto){
+
+
         try{
             const decoded = jwt.verify(req.body.token, process.env.JWT_KEY);
-            var LoginEmail = decoded.email;
-            var LoginPassword = decoded.pass;
+            var uid = decoded.id;
+
+
+
+            User.findOne({_id: uid}, (err,u) => {
+
+                const LoginEmail = u.email;
+                const LoginPassword = u.pass;
+
+                User.findOne({Email: LoginEmail},(err,obj) => {
+                    if (err) {
+                        res.send({Status: 0, Message: "Failed due to " + err})
+                    }
+                    else{
+                        if (obj === null) {
+                            res.send({Status: 0, Message: "Username/Password is invalid"})
+                        }
+                        else {
+                            bcrypt.compare(LoginPassword,obj.Password,(err,result) => {
+                                if (err) {
+                                    res.send({Status: 0, Message: "Error in server "+err})
+                                }
+                                else {
+                                    if (result){
+                                        const token = jwt.sign({
+                                            id: obj._id
+                                        },process.env.JWT_KEY,{expiresIn:'1h'})
+            
+                                        res.send({Status: 1, Message: "User Authenticated", Data: obj, token: token})
+                                    }
+            
+                                    else{
+                                        res.send({Status: 0, Message: "Username/Password is invalid!"})
+                                    }
+                                }
+                            })
+                        }
+                    }
+                })
+
+            })
             console.log(decoded)
         }
     
@@ -69,41 +110,39 @@ router.post('/login',(req,res) => {
     else{
         var LoginEmail = req.body.Email;
         var LoginPassword = req.body.Password;
+        User.findOne({Email: LoginEmail},(err,obj) => {
+            if (err) {
+                res.send({Status: 0, Message: "Failed due to " + err})
+            }
+            else{
+                if (obj === null) {
+                    res.send({Status: 0, Message: "Username/Password is invalid"})
+                }
+                else {
+                    bcrypt.compare(LoginPassword,obj.Password,(err,result) => {
+                        if (err) {
+                            res.send({Status: 0, Message: "Error in server "+err})
+                        }
+                        else {
+                            if (result){
+                                const token = jwt.sign({
+                                    id: obj._id
+                                },process.env.JWT_KEY,{expiresIn:'1h'})
+    
+                                res.send({Status: 1, Message: "User Authenticated", Data: obj, token: token})
+                            }
+    
+                            else{
+                                res.send({Status: 0, Message: "Username/Password is invalid!"})
+                            }
+                        }
+                    })
+                }
+            }
+        })
     }
 
 
-    User.findOne({Email: LoginEmail},(err,obj) => {
-        if (err) {
-            res.send({Status: 0, Message: "Failed due to " + err})
-        }
-        else{
-            if (obj === null) {
-                res.send({Status: 0, Message: "Username/Password is invalid"})
-            }
-            else {
-                bcrypt.compare(LoginPassword,obj.Password,(err,result) => {
-                    if (err) {
-                        res.send({Status: 0, Message: "Error in server "+err})
-                    }
-                    else {
-                        if (result){
-                            const token = jwt.sign({
-                                email: obj.Email,
-                                pass : LoginPassword,
-                                id: obj._id
-                            },process.env.JWT_KEY,{expiresIn:'1h'})
-
-                            res.send({Status: 1, Message: "User Authenticated", Data: obj, token: token})
-                        }
-
-                        else{
-                            res.send({Status: 0, Message: "Username/Password is invalid!"})
-                        }
-                    }
-                })
-            }
-        }
-    })
 
 })
 
